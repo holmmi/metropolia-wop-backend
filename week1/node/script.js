@@ -1,3 +1,5 @@
+'use strict';
+
 const lodash = require("lodash");
 
 console.log("This is JavaScript");
