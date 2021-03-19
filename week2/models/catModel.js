@@ -9,24 +9,24 @@ const getAllCats = async () => {
 };
 
 const getCat = async (catId) => {
-  const [rows] = await poolPromise.query("SELECT * FROM wop_cat WHERE cat_id = ?", [catId]);
+  const [rows] = await poolPromise.execute("SELECT * FROM wop_cat WHERE cat_id = ?", [catId]);
   return rows;
 };
 
 const addCat = async (cat, filename) => {
-  const [rows] = await poolPromise.query("INSERT INTO wop_cat (name, age, weight, owner, filename) VALUES(?, ?, ?, ?, ?)",
+  const [rows] = await poolPromise.execute("INSERT INTO wop_cat (name, age, weight, owner, filename) VALUES(?, ?, ?, ?, ?)",
     [cat.name, cat.age, cat.weight, cat.owner, filename]);
   return rows;
 };
 
 const updateCat = async cat => {
-  const [rows] = await poolPromise.query("UPDATE wop_cat SET name = ?, age = ?, weight = ?, owner = ? WHERE cat_id = ?",
+  const [rows] = await poolPromise.execute("UPDATE wop_cat SET name = ?, age = ?, weight = ?, owner = ? WHERE cat_id = ?",
     [cat.name, cat.age, cat.weight, cat.owner, cat.id]);
   return rows;
 };
 
 const deleteCat = async catId => {
-  const [rows] = await poolPromise.query("DELETE FROM wop_cat WHERE cat_id = ?", [catId]);
+  const [rows] = await poolPromise.execute("DELETE FROM wop_cat WHERE cat_id = ?", [catId]);
   return rows;
 };
 
