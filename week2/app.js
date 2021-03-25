@@ -14,8 +14,12 @@ app.use(cors());
 
 // Parse application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: false}));
+
 // Parse JSON bodies
 app.use(express.json());
+
+// Serve static files
+app.use(express.static("./public/"));
 
 // Serve images from a local uploads folder
 app.use("/image", express.static("./uploads/"));
@@ -23,4 +27,4 @@ app.use("/image", express.static("./uploads/"));
 app.use("/cat", catRouter);
 app.use("/user", userRouter);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`App listening on port ${port}!`));

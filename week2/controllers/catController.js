@@ -11,15 +11,30 @@ const cat_get = async (req, res) => {
 };
 
 const cat_create_post = async (req, res) => {
-    res.json(await catModel.addCat(req.body, req.file.filename));
+    try {
+        res.json(await catModel.addCat(req.body, req.file.filename));
+    } catch (e) {
+        console.error(e);
+        res.status(500);
+    }
 };
 
 const cat_update_put = async (req, res) => {
-    res.json(await catModel.updateCat(req.body));
+    try {
+        res.json(await catModel.updateCat(req.body));
+    } catch (e) {
+        console.error(e);
+        res.status(500);
+    }
 };
 
 const cat_delete = async (req, res) => {
-    res.json(await catModel.deleteCat(req.params.id));
+    try {
+        res.json(await catModel.deleteCat(req.params.id));
+    } catch (error) {
+        console.error(error);
+        res.status(500);
+    }
 };
 
 module.exports = {

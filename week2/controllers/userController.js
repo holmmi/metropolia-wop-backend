@@ -1,6 +1,5 @@
 'use strict';
 
-const e = require('express');
 const userModel = require('../models/userModel');
 
 const user_get_list = async (req, res) => {
@@ -24,7 +23,12 @@ const user_get = async (req, res) => {
 };
 
 const user_create_post = async (req, res) => {
-    res.json(await userModel.addUser(req.body));
+    try {
+        res.json(await userModel.addUser(req.body));
+    } catch (e) {
+        console.error(e);
+        res.status(500);
+    }   
 };
 
 module.exports = {
