@@ -108,3 +108,6 @@ dist
 
 # Uploads folder
 uploads/
+
+# Secrets folder
+secrets/

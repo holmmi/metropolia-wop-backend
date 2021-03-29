@@ -23,8 +23,14 @@ const addUser = async user => {
   return rows;
 };
 
+const getUserLogin = async params => {
+  const [rows] = await poolPromise.execute("SELECT * FROM wop_user WHERE email = ? AND password = ?", params);
+  return rows[0];
+};
+
 module.exports = {
   getAllUsers,
   getUser,
-  addUser
+  addUser,
+  getUserLogin
 };
