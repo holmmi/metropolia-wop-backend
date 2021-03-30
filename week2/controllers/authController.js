@@ -3,8 +3,21 @@
 const jwt = require('jsonwebtoken');
 const passport = require('../utils/passport');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
+const userModel = require('../models/userModel');
 
 const privateKey = fs.readFileSync(__dirname + "/../secrets/jwt.key");
+
+const register = async (req, res, next) => {
+    try {
+        const hash = await bcrypt.hash(req.body.password, 10);
+        await userModel.addUser([req.body.name, req.body.username, hash]);
+        next();
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({error: "Internal Server Error"});
+    }
+};
 
 const login = (req, res, next) => {
     passport.authenticate("local", (err, user) => {
@@ -21,6 +34,13 @@ const login = (req, res, next) => {
     })(req, res, next);
 };
 
+const logout = (req, res) => {
+    req.logout();
+    res.json({message: 'logout'});
+};
+
 module.exports = {
-  login
+    register,
+    login,
+    logout
 };

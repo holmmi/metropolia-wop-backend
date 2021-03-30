@@ -18,13 +18,13 @@ const getUser = async userId => {
   return rows[0];
 };
 
-const addUser = async user => {
-  const [rows] = await poolPromise.execute("INSERT INTO wop_user (name, email, password) VALUES(?, ?, ?)", [user.name, user.email, user.passwd]);
+const addUser = async params => {
+  const [rows] = await poolPromise.execute("INSERT INTO wop_user (name, email, password) VALUES(?, ?, ?)", params);
   return rows;
 };
 
 const getUserLogin = async params => {
-  const [rows] = await poolPromise.execute("SELECT * FROM wop_user WHERE email = ? AND password = ?", params);
+  const [rows] = await poolPromise.execute("SELECT * FROM wop_user WHERE email = ?", params);
   return rows[0];
 };
 
