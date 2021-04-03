@@ -1,15 +1,12 @@
 'use strict';
 
+require('dotenv').config();
 const express = require('express');
 const app = express();
-
 const cors = require('cors');
-
-const port = 3000;
 const catRouter = require('./routes/catRoute');
 const userRouter = require('./routes/userRoute');
 const authRouter = require('./routes/authRoute');
-
 const passport = require('./utils/passport');
 
 // Enable CORS
@@ -26,11 +23,15 @@ app.use(express.json());
 // Serve static files
 app.use(express.static("./public/"));
 
-// Serve images from a local uploads folder
-app.use("/image", express.static("./uploads/"));
+// Serve images from a local thumbnails folder
+app.use("/thumbnails", express.static("./thumbnails/"));
 
 app.use("/cat", catRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+if (process.env.NODE_ENV === "production") {
+    require("./production")(process.env.HTTP_PORT, app);
+} else {
+    require("./development")(process.env.HTTP_PORT, process.env.HTTPS_PORT, app);
+}

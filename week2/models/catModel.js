@@ -13,9 +13,9 @@ const getCat = async (catId) => {
   return rows;
 };
 
-const addCat = async (cat, filename) => {
-  const [rows] = await poolPromise.execute("INSERT INTO wop_cat (name, age, weight, owner, filename) VALUES(?, ?, ?, ?, ?)",
-    [cat.name, cat.age, cat.weight, cat.owner, filename]);
+const addCat = async (cat, filename, coordinates) => {
+  const [rows] = await poolPromise.execute("INSERT INTO wop_cat (name, age, weight, owner, filename, coords) VALUES(?, ?, ?, ?, ?, ?)",
+    [cat.name, cat.age, cat.weight, cat.owner, filename, coordinates]);
   return rows;
 };
 

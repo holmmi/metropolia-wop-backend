@@ -1,6 +1,8 @@
 'use strict';
 
 const catModel = require('../models/catModel');
+const resize = require('../utils/resize');
+const imageMeta = require('../utils/imageMeta');
 
 const cat_get_list = async (req, res) => {
     res.json(await catModel.getAllCats());
@@ -12,7 +14,9 @@ const cat_get = async (req, res) => {
 
 const cat_create_post = async (req, res) => {
     try {
-        res.json(await catModel.addCat(req.body, req.file.filename));
+        const filename = await resize.makeThumbnail(req.file.path, req.file.filename);
+        const coordinates = await imageMeta.getCoordinates(req.file.path);
+        res.json(await catModel.addCat(req.body, filename, coordinates));
     } catch (e) {
         console.error(e);
         res.status(500);

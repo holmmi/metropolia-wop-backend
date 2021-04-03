@@ -29,7 +29,7 @@ const login = (req, res, next) => {
         }
         req.login(user, (err) => {
             const token = jwt.sign({userId: user.user_id}, privateKey, {issuer: "Metropolia", algorithm: "RS256", expiresIn: "1d"});
-            res.json({token: token});
+            res.json({token: token, user: user});
         });
     })(req, res, next);
 };

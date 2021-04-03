@@ -1,5 +1,5 @@
 'use strict';
-const url = 'http://localhost:3000'; // change url when uploading to server
+const url = ''; // change url when uploading to server
 
 // select existing html elements
 const loginWrapper = document.querySelector('#login-wrapper');
@@ -21,6 +21,7 @@ const createCatCards = (cats) => {
   // clear ul
   ul.innerHTML = '';
   cats.forEach((cat) => {
+    console.log(cat);
     // create li with DOM methods
     const img = document.createElement('img');
     img.src = url + '/thumbnails/' + cat.filename;
@@ -29,12 +30,12 @@ const createCatCards = (cats) => {
 
     // open large image when clicking image
     img.addEventListener('click', () => {
-      modalImage.src = url + '/' + cat.filename;
+      modalImage.src = url + '/thumbnails/' + cat.filename;
       imageModal.alt = cat.name;
       imageModal.classList.toggle('hide');
       try {
         const coords = JSON.parse(cat.coords);
-        // console.log(coords);
+        console.log(coords);
         addMarker(coords);
       }
       catch (e) {
@@ -116,6 +117,7 @@ const getCat = async () => {
     const options = {
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+        'Content-Type': 'application/json'
       },
     };
     const response = await fetch(url + '/cat', options);
@@ -163,13 +165,13 @@ const getUsers = async () => {
 // submit add cat form
 addForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
-  const fd = new FormData(addForm);
+  const fd = new FormData(evt.target);
   const fetchOptions = {
     method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
     },
-    body: fd,
+    body: fd
   };
   const response = await fetch(url + '/cat', fetchOptions);
   const json = await response.json();
@@ -212,9 +214,7 @@ loginForm.addEventListener('submit', async (evt) => {
   const response = await fetch(url + '/auth/login', fetchOptions);
   const json = await response.json();
   console.log('login response', json);
-  if (!json.user) {
-    alert(json.message);
-  } else {
+  if (json.token) {
     // save token
     sessionStorage.setItem('token', json.token);
     // show/hide forms + cats

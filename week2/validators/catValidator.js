@@ -27,7 +27,6 @@ const catPostValidator = [
         .bail(),
     check("cat")
         .custom((input, {req}) => {
-            console.log(req.file);
             const allowedMimes = ["image/jpeg", "image/png", "image/gif"];
             return allowedMimes.includes(req.file.mimetype);
         })
